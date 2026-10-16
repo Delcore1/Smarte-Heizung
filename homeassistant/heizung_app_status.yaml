@@ -1,0 +1,13 @@
+# Skript für die Heizungs-App – liest nur, schaltet nichts.
+# Anlegen: Einstellungen → Automationen & Szenen → Skripte → Neues Skript →
+# ⋮ → "In YAML bearbeiten", diesen Inhalt einfügen, speichern.
+# Die Skript-ID MUSS "heizung_app_status" heißen (also script.heizung_app_status).
+alias: "Heizung: App-Status (nur lesen)"
+mode: parallel
+max: 10
+icon: mdi:cellphone-information
+sequence:
+  - variables:
+      antwort: "{% from 'heizung_app.jinja' import status %}{{ status() }}"
+  - stop: "Status geliefert"
+    response_variable: antwort

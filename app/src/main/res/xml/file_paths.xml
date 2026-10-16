@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Nur der Ordner, in den der Updater die heruntergeladene APK legt,
+     wird fuer den Android-Paketinstaller freigegeben. -->
+<paths>
+    <cache-path name="updates" path="updates/" />
+</paths>

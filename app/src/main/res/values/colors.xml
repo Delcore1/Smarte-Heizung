@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dunkel gehalten, damit der Start nicht weiss aufblitzt, bevor das
+         dunkle Home-Assistant-Dashboard geladen ist. -->
+    <color name="surface">#111418</color>
+    <color name="surface_raised">#1B2026</color>
+    <color name="text_strong">#F2F4F6</color>
+    <color name="text_muted">#9AA5B1</color>
+    <color name="flame">#E8833A</color>
+    <color name="icon_bg">#1B2026</color>
+
+    <!-- Betriebsart-Farben (Aus / Automatik / Heizen) -->
+    <color name="mode_aus">#5C6773</color>
+    <color name="mode_automatik">#3AA1A0</color>
+    <color name="mode_heizen">#E8833A</color>
+    <color name="mode_text_on">#12161A</color>
+    <color name="segment_bg">#0C0F13</color>
+</resources>

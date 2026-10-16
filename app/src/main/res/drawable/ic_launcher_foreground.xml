@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  App-Symbol (16.10.2026): eigenes Motiv - Haus mit Satteldach als weisse
+  Linie, darin eine Flamme. Bewusst NICHT das Home-Assistant-Logo (geschuetzte
+  Marke der Open Home Foundation), aber dieselbe schlichte Linien-Sprache.
+  Adaptive Icons sind 108x108, sicher sichtbar ist die Mitte (ca. 18-90).
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <path
+        android:pathData="M28,52 L54,30 L80,52 M34,47 L34,80 Q34,82 36,82 L72,82 Q74,82 74,80 L74,47"
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="5.5"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+
+    <group android:translateY="-3.5">
+        <path
+            android:fillColor="#FFFFFFFF"
+            android:pathData="M54,52 C60.5,59.5 65,64 65,70 C65,76.6 60,81 54,81 C48,81 43,76.6 43,70 C43,66 45.3,62.6 48.2,60.2 C48.7,64.2 50.6,66.2 52.8,67.2 C51,61.6 51.8,56.4 54,52 Z" />
+    </group>
+</vector>

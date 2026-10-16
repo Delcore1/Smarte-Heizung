@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Home Assistant laeuft im Heimnetz meist ohne Zertifikat (http://...:8123).
+  Ab Android 9 ist unverschluesseltes HTTP gesperrt, deshalb hier erlaubt.
+  Eine Freigabe nur fuer private IP-Bereiche ist nicht moeglich: <domain>
+  prueft exakte Hostnamen, keine IP-Bereiche. Die App ruft nur die vom
+  Nutzer eingetragenen Adressen und GitHub (Updates, https) auf.
+-->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="true" />
+</network-security-config>

@@ -1,0 +1,204 @@
+{
+ "version": 1,
+ "haus": {
+  "modus": "Home Office",
+  "modus_optionen": [
+   "Komfort",
+   "Nachtmodus",
+   "Home Office",
+   "Abwesend",
+   "Urlaub"
+  ],
+  "modus_entity": "input_select.hausmodus",
+  "modus_hinweis": "Wird von Home Assistant um 6, 9 und 21 Uhr sowie beim Kommen/Gehen automatisch neu gesetzt.",
+  "aussen": 13.51,
+  "grenze": 20,
+  "sommersperre": false,
+  "witterung_bonus": 1.3,
+  "urlaub": false,
+  "alles_aus": false,
+  "alles_aus_entity": "input_boolean.heizung_alles_aus",
+  "pumpe_laeuft": false,
+  "letzte_aktion": "10:30 - Wohnbereich: Modus Home Office.",
+  "heizen": 0,
+  "fakten": [
+   "🪟 Fenster offen: Schlafzimmer",
+   "💧 Umwälzpumpe aus",
+   "🌡️ Witterung +1,3° auf die Räume"
+  ],
+  "betriebsart_script": "script.heizung_betriebsart",
+  "fernzugriff_url": "https://beispiel.ui.nabu.casa"
+ },
+ "raeume": [
+  {
+   "id": "wohnzimmer",
+   "label": "Wohnzimmer",
+   "icon": "🛋️",
+   "ist": 23,
+   "feuchte": 54.3,
+   "ziel": 14.7,
+   "heizt": false,
+   "fenster_offen": false,
+   "wunsch": 21,
+   "wunsch_entity": "input_number.heizung_wunsch_wohnzimmer",
+   "wunsch_min": 5,
+   "wunsch_max": 30,
+   "wunsch_schritt": 0.5,
+   "wunsch_gesperrt": false,
+   "betriebsart": "automatik",
+   "grund": "Absenkung – Hausmodus Home Office",
+   "ton": "eco",
+   "extras": [
+    "Witterung +1,3°",
+    "Sonne -0,5°"
+   ],
+   "infos": [
+    {
+     "label": "Hausmodus",
+     "wert": "Home Office"
+    }
+   ],
+   "steuerung": [],
+   "hinweis": "Im Nachtmodus wird bei laufendem Fernseher auf Komfort geheizt. Sonne über die Straßenfenster senkt den Wert automatisch."
+  },
+  {
+   "id": "esszimmer",
+   "label": "Esszimmer",
+   "icon": "🍽️",
+   "ist": 23,
+   "feuchte": 54.3,
+   "ziel": 14.7,
+   "heizt": false,
+   "fenster_offen": false,
+   "wunsch": 21,
+   "wunsch_entity": "input_number.heizung_wunsch_esszimmer",
+   "wunsch_min": 5,
+   "wunsch_max": 30,
+   "wunsch_schritt": 0.5,
+   "wunsch_gesperrt": false,
+   "betriebsart": "automatik",
+   "grund": "Absenkung – Hausmodus Home Office",
+   "ton": "eco",
+   "extras": [
+    "Witterung +1,3°",
+    "Sonne -0,5°"
+   ],
+   "infos": [
+    {
+     "label": "Hausmodus",
+     "wert": "Home Office"
+    }
+   ],
+   "steuerung": [],
+   "hinweis": "Im Nachtmodus wird bei laufendem Fernseher auf Komfort geheizt. Sonne über die Straßenfenster senkt den Wert automatisch."
+  },
+  {
+   "id": "badezimmer",
+   "label": "Badezimmer",
+   "icon": "🛁",
+   "ist": 21.5,
+   "feuchte": 64.8,
+   "ziel": 14.9,
+   "heizt": false,
+   "fenster_offen": false,
+   "wunsch": 22,
+   "wunsch_entity": "input_number.heizung_wunsch_badezimmer",
+   "wunsch_min": 5,
+   "wunsch_max": 30,
+   "wunsch_schritt": 0.5,
+   "wunsch_gesperrt": false,
+   "betriebsart": "automatik",
+   "grund": "Absenkung – Zeitplan ab 19:00",
+   "ton": "eco",
+   "extras": [
+    "Witterung +1,3°"
+   ],
+   "infos": [
+    {
+     "label": "Nächster Start",
+     "wert": "19:00"
+    },
+    {
+     "label": "Nächstes Ende",
+     "wert": "–"
+    },
+    {
+     "label": "Vorheizen (gelernt)",
+     "wert": "118 min pro °C"
+    }
+   ],
+   "steuerung": [],
+   "hinweis": "Zeiten änderst du in der Scheduler-Karte in Home Assistant."
+  },
+  {
+   "id": "schlafzimmer",
+   "label": "Schlafzimmer",
+   "icon": "🛏️",
+   "ist": 19,
+   "feuchte": 57.8,
+   "ziel": 5,
+   "heizt": false,
+   "fenster_offen": true,
+   "wunsch": 5,
+   "wunsch_entity": "input_number.heizung_wunsch_schlafzimmer",
+   "wunsch_min": 5,
+   "wunsch_max": 30,
+   "wunsch_schritt": 0.5,
+   "wunsch_gesperrt": true,
+   "betriebsart": "automatik",
+   "grund": "Fenster offen – Heizung pausiert",
+   "ton": "pause",
+   "extras": [],
+   "infos": [
+    {
+     "label": "Nächster Start",
+     "wert": "–"
+    },
+    {
+     "label": "Nächstes Ende",
+     "wert": "–"
+    }
+   ],
+   "steuerung": [],
+   "hinweis": "Zeiten änderst du in der Scheduler-Karte in Home Assistant."
+  },
+  {
+   "id": "buro",
+   "label": "Büro",
+   "icon": "💻",
+   "ist": 22.5,
+   "feuchte": 58.8,
+   "ziel": 21.4,
+   "heizt": false,
+   "fenster_offen": false,
+   "wunsch": 20,
+   "wunsch_entity": "input_number.heizung_wunsch_buro",
+   "wunsch_min": 5,
+   "wunsch_max": 30,
+   "wunsch_schritt": 0.5,
+   "wunsch_gesperrt": false,
+   "betriebsart": "heizen",
+   "grund": "Manuell heizen auf 20,0°",
+   "ton": "heizt",
+   "extras": [
+    "Witterung +1,3°"
+   ],
+   "infos": [],
+   "steuerung": [
+    {
+     "typ": "schalter",
+     "label": "Home-Office morgen",
+     "entity": "input_boolean.home_office_morgen",
+     "an": false
+    },
+    {
+     "typ": "uhrzeit",
+     "label": "Arbeitsbeginn",
+     "entity": "input_datetime.arbeitsbeginn",
+     "wert": "07:30"
+    }
+   ],
+   "hinweis": "Ist „Home-Office morgen“ an, heizt Smart Start das Büro nachts so vor, dass es zum Arbeitsbeginn warm ist."
+  }
+ ]
+}

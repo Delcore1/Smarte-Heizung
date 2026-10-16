@@ -1,0 +1,78 @@
+name: APK bauen und veroeffentlichen
+
+# Ablauf:
+# - Jeder Push auf main baut die App und veroeffentlicht sie als GitHub-Release
+#   "v1.0.<Laufnummer>". Die App prueft dieses Release beim Start und bietet
+#   das Update an.
+# - Von Hand ("Run workflow") auf einem anderen Zweig gestartet, wird nur
+#   gebaut (Probe, ob alles kompiliert) - ohne Release.
+# - Die Versionsnummer muss NIRGENDS mehr von Hand eingetragen werden:
+#   app/build.gradle.kts liest dieselbe Laufnummer (GITHUB_RUN_NUMBER).
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      VERSION: 1.0.${{ github.run_number }}
+    steps:
+      - name: Quellcode laden
+        uses: actions/checkout@v4
+
+      - name: Java 17 einrichten
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Gradle einrichten
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+
+      - name: Signierschluessel aus Secret anlegen
+        env:
+          KS_B64: ${{ secrets.SIGNING_KEYSTORE_B64 }}
+        run: |
+          if [ -z "$KS_B64" ]; then echo "::error::Secret SIGNING_KEYSTORE_B64 fehlt (Settings > Secrets and variables > Actions)"; exit 1; fi
+          echo "$KS_B64" | base64 -d > "$RUNNER_TEMP/release.jks"
+          echo "SIGNING_KEYSTORE=$RUNNER_TEMP/release.jks" >> "$GITHUB_ENV"
+
+      - name: Szenario-Tests
+        run: gradle testReleaseUnitTest --no-daemon
+
+      - name: APK bauen
+        env:
+          SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
+        run: gradle assembleRelease --stacktrace --no-daemon
+
+      - name: APK benennen, Release-Text aus CHANGELOG
+        run: |
+          mkdir -p out
+          cp app/build/outputs/apk/release/*.apk "out/Heizung-${VERSION}.apk"
+          # oberster Abschnitt aus CHANGELOG.md = Text des Releases (und der Update-Meldung in der App)
+          awk '/^## /{n++} n==1' CHANGELOG.md > out/notes.md
+          printf '\n\nInstallation und Einrichtung: siehe README im Repository.\n' >> out/notes.md
+
+      - name: APK als Bau-Ergebnis ablegen
+        uses: actions/upload-artifact@v4
+        with:
+          name: Heizung-${{ env.VERSION }}
+          path: out/*.apk
+
+      - name: GitHub-Release veroeffentlichen
+        if: github.ref == 'refs/heads/main'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ env.VERSION }}
+          name: Heizung ${{ env.VERSION }}
+          body_path: out/notes.md
+          make_latest: true
+          files: out/*.apk
