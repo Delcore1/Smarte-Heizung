@@ -3,6 +3,11 @@
 Neueste oben. Die Versionsnummer vergibt GitHub beim Bauen (`1.0.<Laufnummer>`).
 Der oberste Abschnitt erscheint als Text im Release und in der Update-Meldung der App.
 
+## Kleines Update
+
+- In den Einstellungen steht jetzt, wo man Fehler und Ideen meldet (GitHub-Issues).
+- Erstes Update mit dem neuen Signierschlüssel – prüft den Update-Weg in der App.
+
 ## Erste öffentliche Test-Version
 
 - Alle Räume auf einen Blick, **Farbe = Zustand**: heizt (orange), warm genug, Absenkung, Fenster offen, aus.

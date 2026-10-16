@@ -817,6 +817,10 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = Flame),
                     ) { Text("Speichern & verbinden", fontWeight = FontWeight.Bold) }
+                    Text(
+                        "Fehler oder Ideen? github.com/Delcore1/Smarte-Heizung → Issues",
+                        fontSize = 11.sp, color = Muted, lineHeight = 15.sp,
+                    )
                     TextButton(onClick = { lifecycleScope.launch { checkUpdate(manual = true) } }) {
                         Text("Nach Updates suchen", fontSize = 12.sp, color = Amber)
                     }
