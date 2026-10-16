@@ -1,0 +1,181 @@
+{
+ "version": 1,
+ "haus": {
+  "modus": "",
+  "modus_optionen": [],
+  "modus_entity": "",
+  "modus_hinweis": "",
+  "aussen": 20.2,
+  "wetter": "partlycloudy",
+  "tag": true,
+  "alles_aus": false,
+  "alles_aus_entity": "",
+  "pumpe_laeuft": false,
+  "letzte_aktion": "",
+  "fakten": [],
+  "betriebsart_script": "",
+  "fernzugriff_url": ""
+ },
+ "raeume": [
+  {
+   "id": "badezimmer",
+   "label": "Badezimmer",
+   "icon": "",
+   "ist": 21.1,
+   "feuchte": 65.8,
+   "ziel": 8,
+   "heizt": false,
+   "fenster_offen": false,
+   "wunsch": 8,
+   "wunsch_entity": "climate.badezimmer",
+   "wunsch_min": 4,
+   "wunsch_max": 35,
+   "wunsch_schritt": 0.5,
+   "wunsch_gesperrt": false,
+   "betriebsart": "automatik",
+   "grund": "Temperatur erreicht",
+   "ton": "normal",
+   "extras": [],
+   "infos": [
+    {
+     "label": "Thermostate",
+     "wert": "1"
+    },
+    {
+     "label": "Fensterkontakte",
+     "wert": "1"
+    }
+   ],
+   "steuerung": [],
+   "hinweis": ""
+  },
+  {
+   "id": "buro",
+   "label": "Büro",
+   "icon": "",
+   "ist": 22.1,
+   "feuchte": 59.8,
+   "ziel": 8,
+   "heizt": false,
+   "fenster_offen": false,
+   "wunsch": 8,
+   "wunsch_entity": "climate.buro",
+   "wunsch_min": 4,
+   "wunsch_max": 35,
+   "wunsch_schritt": 0.5,
+   "wunsch_gesperrt": false,
+   "betriebsart": "automatik",
+   "grund": "Temperatur erreicht",
+   "ton": "normal",
+   "extras": [],
+   "infos": [
+    {
+     "label": "Thermostate",
+     "wert": "1"
+    },
+    {
+     "label": "Fensterkontakte",
+     "wert": "1"
+    }
+   ],
+   "steuerung": [],
+   "hinweis": ""
+  },
+  {
+   "id": "esszimmer",
+   "label": "Esszimmer",
+   "icon": "",
+   "ist": 23.4,
+   "feuchte": null,
+   "ziel": 8,
+   "heizt": false,
+   "fenster_offen": false,
+   "wunsch": 8,
+   "wunsch_entity": "climate.esszimmer",
+   "wunsch_min": 4,
+   "wunsch_max": 35,
+   "wunsch_schritt": 0.5,
+   "wunsch_gesperrt": false,
+   "betriebsart": "automatik",
+   "grund": "Temperatur erreicht",
+   "ton": "normal",
+   "extras": [],
+   "infos": [
+    {
+     "label": "Thermostate",
+     "wert": "1"
+    },
+    {
+     "label": "Fensterkontakte",
+     "wert": "1"
+    }
+   ],
+   "steuerung": [],
+   "hinweis": ""
+  },
+  {
+   "id": "schlafzimmer",
+   "label": "Schlafzimmer",
+   "icon": "",
+   "ist": 20.2,
+   "feuchte": 61.8,
+   "ziel": 8,
+   "heizt": false,
+   "fenster_offen": false,
+   "wunsch": 8,
+   "wunsch_entity": "climate.schlafzimmer",
+   "wunsch_min": 4,
+   "wunsch_max": 35,
+   "wunsch_schritt": 0.5,
+   "wunsch_gesperrt": false,
+   "betriebsart": "automatik",
+   "grund": "Temperatur erreicht",
+   "ton": "normal",
+   "extras": [],
+   "infos": [
+    {
+     "label": "Thermostate",
+     "wert": "1"
+    },
+    {
+     "label": "Fensterkontakte",
+     "wert": "1"
+    }
+   ],
+   "steuerung": [],
+   "hinweis": ""
+  },
+  {
+   "id": "wohnzimmer",
+   "label": "Wohnzimmer",
+   "icon": "",
+   "ist": 23.4,
+   "feuchte": 55.3,
+   "ziel": 8,
+   "heizt": false,
+   "fenster_offen": false,
+   "wunsch": 8,
+   "wunsch_entity": "climate.wohnzimmer_1,climate.wohnzimmer_2",
+   "wunsch_min": 4,
+   "wunsch_max": 35,
+   "wunsch_schritt": 0.5,
+   "wunsch_gesperrt": false,
+   "betriebsart": "automatik",
+   "grund": "Temperatur erreicht",
+   "ton": "normal",
+   "extras": [],
+   "infos": [
+    {
+     "label": "Thermostate",
+     "wert": "2"
+    },
+    {
+     "label": "Fensterkontakte",
+     "wert": "1"
+    }
+   ],
+   "steuerung": [],
+   "hinweis": ""
+  }
+ ]
+}

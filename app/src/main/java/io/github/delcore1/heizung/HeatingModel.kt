@@ -240,10 +240,16 @@ data class ServiceCall(val domain: String, val service: String, val data: Map<St
  * So umgeht die App nie eine Logik, die der Besitzer in HA gebaut hat.
  */
 fun wishCall(entity: String, value: Double): ServiceCall? {
-    val domain = entity.substringBefore('.', "")
+    // Mehrere Entitaeten (z. B. zwei Thermostate in einem Raum) kommen
+    // kommagetrennt und werden gemeinsam gestellt.
+    val ids = entity.split(',').map { it.trim() }.filter { it.isNotEmpty() }
+    if (ids.isEmpty()) return null
+    val domain = ids.first().substringBefore('.', "")
+    if (ids.any { it.substringBefore('.', "") != domain }) return null
+    val target: Any = if (ids.size == 1) ids.first() else ids
     return when (domain) {
-        "input_number", "number" -> ServiceCall(domain, "set_value", mapOf("entity_id" to entity, "value" to value))
-        "climate" -> ServiceCall("climate", "set_temperature", mapOf("entity_id" to entity, "temperature" to value))
+        "input_number", "number" -> ServiceCall(domain, "set_value", mapOf("entity_id" to target, "value" to value))
+        "climate" -> ServiceCall("climate", "set_temperature", mapOf("entity_id" to target, "temperature" to value))
         else -> null
     }
 }

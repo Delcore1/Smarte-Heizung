@@ -28,23 +28,30 @@ Sie **liest und bedient nur, was dein Home Assistant ihr sagt** – deine Automa
 3. **Updates kommen danach von selbst**: Die App prüft beim Öffnen, ob es eine neuere Version gibt,
    lädt sie selbst und öffnet den Installer. Einmal erlaubst du „Apps aus dieser Quelle“ für die Heizungs-App.
 
-## 2. Home Assistant vorbereiten (einmalig, ca. 5 Minuten)
-Die App kennt keine Entitäten fest. Ein kleines Skript in Home Assistant sagt ihr, welche Räume es gibt.
+## 2. Home Assistant vorbereiten (einmalig, ca. 3 Minuten)
+Die App kennt keine Entitäten fest. Eine Vorlage in Home Assistant **findet deine Thermostate selbst** –
+gruppiert nach Bereichen, mit Fensterkontakten, Feuchte und Wetter. Du musst nichts eintragen.
 
-1. **Vorlage ablegen:** [`homeassistant/heizung_app.jinja`](homeassistant/heizung_app.jinja) nach
-   `config/custom_templates/heizung_app.jinja` kopieren (Ordner ggf. anlegen, z. B. mit dem File-Editor-Add-on).
-   Darin die Liste `raeume` an deine Thermostate (`climate.*`) anpassen, optional Fensterkontakte und die Wetter-Entität.
+1. **Vorlage installieren** – eine der beiden Varianten:
+   - **HACS:** HACS → ⋮ → *Benutzerdefinierte Repositories* → `https://github.com/Delcore1/Smarte-Heizung`,
+     Kategorie **Template** → hinzufügen → „Smarte Heizung“ herunterladen.
+   - **Von Hand:** [`heizung_app.jinja`](heizung_app.jinja) nach `config/custom_templates/heizung_app.jinja` kopieren.
 2. **Vorlagen neu laden:** Entwicklerwerkzeuge → Aktionen → `homeassistant.reload_custom_templates` → Ausführen.
 3. **Skript anlegen:** Einstellungen → Automationen & Szenen → Skripte → Neues Skript → ⋮ → „In YAML bearbeiten“ →
    Inhalt von [`homeassistant/heizung_app_status.yaml`](homeassistant/heizung_app_status.yaml) einfügen → speichern.
    Die Skript-ID muss **`heizung_app_status`** sein.
 4. **Testen:** Entwicklerwerkzeuge → Aktionen → `script.heizung_app_status` → „Antwort“ anzeigen.
-   Dort sollten deine Räume mit Temperaturen stehen.
+   Dort stehen deine Räume mit Temperaturen.
 
-Mit dieser Vorlage stellt die App die Solltemperatur direkt am Thermostat.
-Hast du eigene Heizungs-Skripte, die einen Helfer (`input_number`) lesen, trag den Helfer als `wunsch_entity` ein –
-dann bedient die App nur den Helfer. Hausmodus-Knöpfe, „Alles aus“ und Aus/Automatik/Heizen erscheinen nur,
-wenn du die passenden Felder füllst. Alle Felder: [`homeassistant/FORMAT.md`](homeassistant/FORMAT.md).
+**Gut zu wissen**
+- Räume entstehen aus den **Bereichen** in Home Assistant. Zwei Thermostate im selben Bereich = ein Raum,
+  die App stellt beide gemeinsam. Thermostate ohne Bereich erscheinen einzeln.
+- Fensterkontakte werden erkannt, wenn sie im selben Bereich liegen und die Geräteklasse Fenster/Tür/Öffnung haben.
+- Ein Thermostat weglassen: im Skript `status(ausschliessen=['climate.xyz'])` statt `status()` schreiben.
+- Die App stellt bei dieser Vorlage die Solltemperatur direkt am Thermostat. Wer eigene Heizungs-Skripte mit
+  Helfern (`input_number`) hat, kann eine eigene Vorlage bauen, die den Helfer nennt – dann bedient die App
+  nur den Helfer. Hausmodus, „Alles aus“ und Aus/Automatik/Heizen erscheinen nur, wenn die Vorlage sie liefert.
+  Alle Felder: [`homeassistant/FORMAT.md`](homeassistant/FORMAT.md).
 
 ## 3. Erster Start
 - **Adresse zuhause**, z. B. `http://192.168.1.10:8123`
@@ -84,6 +91,7 @@ wenn du die passenden Felder füllst. Alle Felder: [`homeassistant/FORMAT.md`](h
 | `HeatingModel.kt` | liest die Status-Antwort, Farben/Wetter-Zuordnung, Dienstaufrufe |
 | `HaApi.kt` | Verbindung (zuhause/unterwegs, Wechsel bei Netzwechsel) |
 | `Updater.kt` | Update-Prüfung, Download, Installer |
-| `homeassistant/` | Vorlage, Skript, Format-Beschreibung für Home Assistant |
+| `heizung_app.jinja`, `hacs.json` | Vorlage für Home Assistant (findet Thermostate selbst, per HACS installierbar) |
+| `homeassistant/` | Skript und Format-Beschreibung |
 
 Änderungen: [`CHANGELOG.md`](CHANGELOG.md)

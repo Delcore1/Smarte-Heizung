@@ -1,0 +1,80 @@
+{#-
+  Smarte Heizung – Datenquelle für die Android-App (github.com/Delcore1/Smarte-Heizung)
+
+  Findet ALLES SELBST, nichts anpassen nötig:
+  - alle Thermostate (climate.*), gruppiert nach Bereich (zwei Thermostate im
+    selben Bereich = ein Raum, die App stellt beide gemeinsam)
+  - Fensterkontakte (binary_sensor mit Geräteklasse window/door/opening) und
+    Feuchtesensoren im selben Bereich
+  - die erste Wetter-Entität und den Sonnenstand
+  Thermostate ohne Bereich erscheinen einzeln unter ihrem Namen.
+  Tipp: Bereiche zuweisen unter Einstellungen → Geräte & Dienste → Gerät → Bereich.
+
+  Einzelne Thermostate weglassen:  status(ausschliessen=['climate.gaestezimmer'])
+
+  Installation: per HACS (Kategorie "Template") oder diese Datei nach
+  config/custom_templates/heizung_app.jinja kopieren, dann
+  "homeassistant.reload_custom_templates" ausführen. Dazu das Skript aus
+  homeassistant/heizung_app_status.yaml anlegen.
+-#}
+{%- macro status(ausschliessen=[]) -%}
+{%- set alle = states.climate | rejectattr('state', 'in', ['unavailable', 'unknown']) | map(attribute='entity_id') | reject('in', ausschliessen) | list -%}
+{%- set ns = namespace(raeume=[], gesehen=[]) -%}
+{%- for c in alle -%}
+  {%- set bereich = area_id(c) -%}
+  {%- set schluessel = bereich or c -%}
+  {%- if schluessel not in ns.gesehen -%}
+    {%- set ns.gesehen = ns.gesehen + [schluessel] -%}
+    {%- set g = namespace(cl=[], ist=[], feuchte=none, ziel=none, heizt=false, aus=true, fenster=false, fensterliste=[]) -%}
+    {%- for x in alle if (area_id(x) or x) == schluessel -%}
+      {%- set g.cl = g.cl + [x] -%}
+      {%- set t = state_attr(x, 'current_temperature') -%}
+      {%- if t is number -%}{%- set g.ist = g.ist + [t] -%}{%- endif -%}
+      {%- set z = state_attr(x, 'temperature') -%}
+      {%- if z is number and (g.ziel is none or z > g.ziel) -%}{%- set g.ziel = z -%}{%- endif -%}
+      {%- if is_state_attr(x, 'hvac_action', 'heating') -%}{%- set g.heizt = true -%}{%- endif -%}
+      {%- if not is_state(x, 'off') -%}{%- set g.aus = false -%}{%- endif -%}
+      {%- if g.feuchte is none and state_attr(x, 'current_humidity') is number -%}{%- set g.feuchte = state_attr(x, 'current_humidity') -%}{%- endif -%}
+    {%- endfor -%}
+    {%- if bereich -%}
+      {%- for e in area_entities(bereich) -%}
+        {%- set dc = state_attr(e, 'device_class') -%}
+        {%- if e.startswith('binary_sensor.') and dc in ['window', 'door', 'opening'] -%}
+          {%- set g.fensterliste = g.fensterliste + [e] -%}
+          {%- if is_state(e, 'on') -%}{%- set g.fenster = true -%}{%- endif -%}
+        {%- elif g.feuchte is none and e.startswith('sensor.') and dc == 'humidity' and states(e) | is_number -%}
+          {%- set g.feuchte = states(e) | float -%}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endif -%}
+    {%- set label = area_name(bereich) if bereich else state_attr(c, 'friendly_name') or c -%}
+    {%- set ist = (g.ist | sum / g.ist | count) | round(1) if g.ist else none -%}
+    {%- set ziel_txt = ('%.1f' | format(g.ziel | float(0))) | replace('.', ',') -%}
+    {%- set grund = 'Fenster offen' if g.fenster else ('Thermostat aus' if g.aus else ('Heizt auf ' ~ ziel_txt ~ '°' if g.heizt else 'Temperatur erreicht')) -%}
+    {%- set ton = 'pause' if g.fenster else ('aus' if g.aus else ('heizt' if g.heizt else 'normal')) -%}
+    {%- set ns.raeume = ns.raeume + [{
+      'id': label | slugify, 'label': label, 'icon': '',
+      'ist': ist, 'feuchte': g.feuchte, 'ziel': g.ziel, 'heizt': g.heizt, 'fenster_offen': g.fenster,
+      'wunsch': g.ziel, 'wunsch_entity': g.cl | join(','),
+      'wunsch_min': state_attr(c, 'min_temp') or 5, 'wunsch_max': state_attr(c, 'max_temp') or 30,
+      'wunsch_schritt': state_attr(c, 'target_temp_step') or 0.5,
+      'wunsch_gesperrt': g.aus or g.ziel is none,
+      'betriebsart': 'automatik', 'grund': grund, 'ton': ton,
+      'extras': [], 'infos': [{'label': 'Thermostate', 'wert': g.cl | count | string}] + ([{'label': 'Fensterkontakte', 'wert': g.fensterliste | count | string}] if g.fensterliste else []),
+      'steuerung': [], 'hinweis': ''
+    }] -%}
+  {%- endif -%}
+{%- endfor -%}
+{%- set wetter = (states.weather | map(attribute='entity_id') | list | first) or '' -%}
+{{ {
+  'version': 1,
+  'haus': {
+    'modus': '', 'modus_optionen': [], 'modus_entity': '', 'modus_hinweis': '',
+    'aussen': state_attr(wetter, 'temperature') if wetter else none,
+    'wetter': states(wetter) if wetter else '', 'tag': is_state('sun.sun', 'above_horizon'),
+    'alles_aus': false, 'alles_aus_entity': '', 'pumpe_laeuft': false, 'letzte_aktion': '', 'fakten': [],
+    'betriebsart_script': '', 'fernzugriff_url': ''
+  },
+  'raeume': ns.raeume | sort(attribute='label')
+} }}
+{%- endmacro -%}

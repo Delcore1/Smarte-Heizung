@@ -8,6 +8,13 @@ Der oberste Abschnitt erscheint als Text im Release und in der Update-Meldung de
 - In den Einstellungen steht jetzt, wo man Fehler und Ideen meldet (GitHub-Issues).
 - Erstes Update mit dem neuen Signierschlüssel – prüft den Update-Weg in der App.
 
+## Automatische Erkennung
+
+- Die Vorlage für Home Assistant **findet Thermostate, Fensterkontakte, Feuchte und Wetter selbst** – gruppiert nach Bereichen. Nichts mehr anpassen nötig.
+- Per **HACS** installierbar (benutzerdefiniertes Repository, Kategorie *Template*).
+- Zwei Thermostate in einem Raum werden **gemeinsam** gestellt.
+- In den Einstellungen steht, wo man Fehler und Ideen meldet.
+
 ## Erste öffentliche Test-Version
 
 - Alle Räume auf einen Blick, **Farbe = Zustand**: heizt (orange), warm genug, Absenkung, Fenster offen, aus.

@@ -196,4 +196,22 @@ class ScenarioTest {
         assertEquals("", s.house.allOffEntity)      // ohne "Alles aus" -> Kachel ausgeblendet
         assertEquals("", s.house.betriebsartScript) // ohne Betriebsart-Skript -> Umschalter ausgeblendet
     }
+
+    // ------------------------------------------------------------ automatische Erkennung
+
+    @Test fun zweiThermostateImRaum_werdenGemeinsamGestellt() {
+        val c = wishCall("climate.wohnzimmer_1,climate.wohnzimmer_2", 21.0)!!
+        assertEquals("set_temperature", c.service)
+        assertEquals(listOf("climate.wohnzimmer_1", "climate.wohnzimmer_2"), c.data["entity_id"])
+        assertNull(wishCall("climate.a,input_number.b", 21.0))   // gemischt -> nichts senden
+    }
+
+    @Test fun automatischeVorlage_wirdGelesen() {
+        val j = JSONObject(javaClass.classLoader!!.getResource("status_auto.json")!!.readText())
+        val s = parseStatus(j)
+        assertEquals(5, s.rooms.size)
+        val wz = s.rooms.first { it.id == "wohnzimmer" }
+        assertEquals("climate.wohnzimmer_1,climate.wohnzimmer_2", wz.wishEntity)
+        assertEquals("2", wz.infos.first { it.label == "Thermostate" }.value)
+    }
 }
